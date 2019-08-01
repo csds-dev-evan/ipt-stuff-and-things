@@ -1,0 +1,89 @@
+Relay Attacks:::
+Multirelay
+ntlmrelayx
+mitm6
+
+MITM Attacks:
+ssh-smitm
+evil-ssdp
+Seth (rdp)
+exchangerelayx
+
+PRINTER ENUMERATIONNN:::
+https://github.com/percx/Praeda
+
+Check ACL Misconfiguration:::
+A script for advanced discovery of Privileged Accounts - includes Shadow Admins
+https://github.com/cyberark/ACLight
+
+MS17-010::::
+	-DoublePulsar for x86 targets
+	
+Anonymous Shares:::
+sharesearch -- https://github.com/nikallass/sharesearch
+
+SNMP Community Strings:::
+-msfconsole use hp_printer_enum -- slice out usernames from this 
+
+Name Service Poisoning
+	-Responder
+		**Use WinPwn if you reach other hosts to start service poisoning on other subnets**
+		
+-------------------------------------------------------------------------------	
+Default Credentials:
+changeme
+###Common to always try using msf##
+cisco:cisco --ssh
+root:root --ssh
+sa:sa --mysql
+#########################
+--------------------------------------------------------------------------------
+Ldap Enumeration
+	-SMB bruteforce
+
+Name Service Poisoning
+
+--------------------------------------------------------------------------------
+Username enumeration that does not affect lockout policy
+https://github.com/ropnop/kerbrute
+
+--------------------------------------------------------------------------------
+With Credentials::
+PSExec
+Printer Bug (spoolsample or dementor.py)
+
+Credential Shit::
+Rubeus
+Mimikatz
+Mimikittenz
+Mimipenguinz
+
+pulling files remotely::
+scp
+
+popping up web servers to serve files here and there::
+python simpleserver 
+
+OSINT:::
+theHarvester
+discover
+email-enum
+karma (password breach check -- cleartext)  || Alternative -- pwnedornot
+crosslinked
+hunter.io
+
+HTTP Login Bruteforce/Dictionary/ WHATEVER -- no lockout prolly :::::
+auxiliary scanner/http/http_login
+
+
+Web Application Testing:::
+Nikto
+Archani
+Jexboss
+
+Old Ass OS's :::::
+ms-08-76 netapi nonsense
+
+Command and Control Centers:::
+Covenant
+PowerHub
