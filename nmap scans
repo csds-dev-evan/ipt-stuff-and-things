@@ -6,7 +6,8 @@ nmap -sSUV -iL hosts -Pn -p U:53,123,161,162,623,500,T:20-23,25,53,67-68,69,79-8
 ##Host discovery## 
 nmap -sn -n <targets> 
 nmap -A <host> (run this second) 
-nmap -sV -F nmap -p- -sV -O -T4 -v7 -sC
+nmap -sV -F 
+nmap -p- -sV -O -T4 -v7 -sC
 
 ##Open SMB shares## 
 nmap --script=smb-enum-shares -p445
