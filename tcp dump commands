@@ -1,0 +1,10 @@
+--------------------------------------------------------------------------
+###### Dumps POST request, proof for plain text credentials #####
+sudo tcpdump -s 0 -A -vv 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x504f5354'                
+
+##### Dumps Clear Text Credentials ####
+sudo tcpdump port http or port ftp or port smtp or port imap or port pop3 or port telnet -l -A | egrep -i -B5 'pass=|pwd=|log=|login=|user=|username=|pw=|passw=|passwd=|password=|pass:|user:|username:|password:|login:|pass |user '    
+
+###### Dumps HTTP POST requests, just prints passwords #####
+ sudo tcpdump -s 0 -A -n -l | egrep -i "POST /|pwd=|passwd=|password=|Host:"
+----------------------------------------------------------------
