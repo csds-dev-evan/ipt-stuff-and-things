@@ -1,0 +1,17 @@
+Domain Groups and Users Enumeration – The ISA conducted a series of anonymous scans to successfully enumerate sensitive information such as usernames, groups, account settings, and permissions from systems supporting LDAP. Most commonly targeted systems are running Microsoft Active Directory. TraceSecurity recommends configuring all LDAP servers and services to require authentication to prevent unauthorized enumeration attempts by malicious parties.
+
+
+Anonymous Domain Enumeration: By default, Windows allows anonymous users to perform enumeration of the SAM account or user names as well as network shares. When left changed, an unauthorized user could anonymously list account names and shared resources; thereby, using the information to attempt authentication attacks and conduct skillfully planned social-engineering attacks
+
+
+TraceSecurity recommends configuring the domain settings to disallow anonymous enumeration of SAM accounts.
+
+
+Without a correctly configured domain controller any user requesting anonymous SAM information. The analyst was able to query the domain anonymously and dump the entire active directory schema, including users, groups, and computer information.
+
+Remediation: TraceSecurity recommends the organization evaluate the best practices published by Microsoft that encourages the Anonymous Logon Policy restriction to be enabled with the organization’s network and system connectivity scheme to prevent unauthorized users from listing account names and network shares.
+
+Testing Notes:
+1. The ISA used a service scan to identify active domain controllers on the network
+2. After identifying these domain controllers, the ISA used the tool “enum4linux” to conduct an anonymous access attempt and dump the entire Active Directory contents. These contents included groups, their corresponding users, system names, and domain administrator accounts
+3. The ISA then parsed this enumeration and performed a limited password attack.
