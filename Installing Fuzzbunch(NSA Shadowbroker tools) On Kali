@@ -1,0 +1,42 @@
+Installing FuzzBunch on Kali:: -- Ref -- https://github.com/mdiazcl/fuzzbunch-debian#step-3-get-files-from-git
+------------------------------
+Step 1: Installing WINEARCH
+
+apt update
+apt install wine winbind winetricks
+
+##Since fuzzbunch uses windows32 libraries, we are going to setup our own wine32 environment, also this will prevent to break any wine application that you are already using.##
+
+# Install wine32
+dpkg --add-architecture i386 && apt-get update && apt-get install wine32
+
+# Start a wine32 environment
+WINEPREFIX="$HOME/.wine-fuzzbunch" WINEARCH=win32 wine wineboot
+
+# Change WINEPREFIX for this session (modify your .bashrc accordingly if you want to make it permanent)
+export WINEPREFIX=$HOME/.wine-fuzzbunch
+
+Step 2: Add python and fuzzbunch to PATH
+wine regedit.exe
+Select: HKEY_CURRENT_USER\Environment
+
+Right Click --> Add String Value
+
+Type: String
+Name: PATH
+Value: c:\\windows;c:\\windows\\system;C:\\Python26;C:\\fuzzbunch-debian\\windows\\fuzzbunch
+
+Step 3: Get files from GIT
+cd $HOME/.wine-fuzzbunch/drive_c
+git clone https://github.com/mdiazcl/fuzzbunch-debian.git
+
+Step 4: Installing Python
+winetricks python26
+##If you are having issues, Install each module (python-2.6 and pywin32-219.win32.py2.6) from the installer folder##
+
+Step 5: Run fuzzbunch
+Switch to fuzzbunch folder
+
+cd $HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows
+wine cmd.exe
+python fb.py
