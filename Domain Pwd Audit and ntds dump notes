@@ -1,0 +1,19 @@
+https://github.com/clr2of8/DPAT
+##Domain Password Audit Tool##
+
+git clone https://github.com/clr2of8/DPAT
+
+##Your customer.ntds file should be in this format:##
+			 domain\username:RID:lmhash:nthash:::
+#########################################################
+
+dpat.py -n customer.ntds -c hashcat.potfile -g "Domain Admins.txt" "Enterprise Admins.txt"
+
+##You can get this file by first dumping the password hashes from your domain controller by executing the following command in an administrative command prompt on a domain controller. Just make sure you have enough disk space to store the output in c:\temp. The amount of space needed will be slightly larger than the size of the ntds.dit file that is currently on the disk, as this performs a backup of that file and some registry settings.
+
+ntdsutil "ac in ntds" "ifm" "cr fu c:\temp" q q
+##get off the system somehow to local kali for cracking##
+
+secretsdump.py -system registry/SYSTEM -ntds Active\ Directory/ntds.dit LOCAL -outputfile customer
+
+
