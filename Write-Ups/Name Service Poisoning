@@ -1,0 +1,17 @@
+Description:  The analyst used a network attack technique to trick local systems on the network into believing the analyst’s testing computer was a legitimate system providing a service requested by other systems and users on the internal network. As a result, these systems provided usernames and password hashes to the analyst to capture for offline cracking. 
+
+This technique is known as an NBT-NS (NetBIOS Name Service) and LLMNR (Link-Local Multicast Name Resolution) Poisoning Attack. NBT-NS and LLMNR are components of Microsoft systems allowing systems on the same subnet to help each other resolve hostnames with IP addresses when DNS, or a DNS entry is not available. In this situation, a malicious system could falsely identify itself as a requested system. 
+
+Remediation:  TraceSecurity recommends disabling NBT-NS and LLMNR services. If these services are required for business functionality, Trace Security recommends employing automated detection rules that can identify and prevent poisoning attacks. 
+These requests can be captured, and a spoofed response can be sent back to the victim from the attacking machine. These spoofed responses will tell the victim’s machine to authenticate to the attacker’s machine. Through this process, the attacker can capture a password hash. 
+
+If possible, TraceSecurity recommends eliminating the use of LLMNR to resolve host names if initial DNS queries fail.  
+The steps to mitigate against the risks due to this vulnerability include enabling the network adapter setting “Disabled NetBIOS over TCP/IP,” unchecking the setting “Automatically detect settings” of the Local Area Network (LAN) settings in Internet Options and enabling the Group Policy setting labeled “Turn off Multicast Name Resolution.” Additionally, strengthening the organization’s established password policies will also help reduce the likelihood of successfully cracking these hashes. Password requirements should contain the following characteristics, at a minimum:
+
+•	Be at least 8-10 characters long; ideally longer (especially for administrative accounts)
+•	Use uppercase and lowercase characters
+•	Use alpha and numeric characters, including special characters (e.g. !?$£#@%)
+•	Should not be easily guessable like company names, pets name, etc.
+•	Not be a word from a common dictionary (e.g. orange, computer, television)
+•	Not have any part of the username in it
+•	Change the password every 60-90 days
