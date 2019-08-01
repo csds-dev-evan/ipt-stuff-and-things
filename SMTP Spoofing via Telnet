@@ -1,0 +1,20 @@
+### SMTP Spoofing via telnet#####-------------------------------------------------------
+Open your command prompt.
+Now, connect with telnet using the following command:
+telnet example.com 25
+Type ehlo example.com. Some servers also accept helo in place of ehlo.
+ehlo example.com
+Type mail from: username@example.com:
+mail from: username@example.com
+Type rcpt to: friend@hotmail.com, friend2@yahoo.com (replace with your actual recipient name):
+rcpt to: friend@hotmail.com, friend2@yahoo.com
+To write the message - type data, followed by your subject and message. To end the message, put a period on a line by itself and press enter:
+data
+Subject: External Penetration Test
+
+Hello,
+
+This is part of an external penetration test performed by TraceSecurity. Please forward this message to <emailaddress> if you receive this.
+
+Thank You,
+Evan Royer
