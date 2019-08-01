@@ -1,0 +1,13 @@
+---------------------------
+Relay Attack install:::::
+---------------------------
+sudo apt install git -y
+sudo apt install python-pip -y
+sudo apt install tmux -y
+sudo apt install proxychains -y
+mkdir Tools && cd Tools
+sudo git clone https://github.com/lgandx/responder
+sudo git clone https://github.com/SecureAuthCorp/impacket
+sudo git clone https://github.com/fox-it/mitm6
+sudo cd impacket && pip install . && cd .. && cd mitm6 && pip install -r requirements.txt
+sudo apt-get install python-impacket python-twisted python-netifaces python-ipaddress python-scapy python-future -y
