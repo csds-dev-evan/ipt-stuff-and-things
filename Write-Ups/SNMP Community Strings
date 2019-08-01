@@ -1,0 +1,5 @@
+Description:  Some systems were discovered utilizing default SNMP community strings, which serve as passwords to provide read and even write access to a system. The ISA was able to gather additional information about printers that responded to SNMP queries. An attacker could utilize this access to further map out the network by enumerating valid subnets and hosts through routing information. An even more malicious attacker could reconfigure routing information on devices in order to cause network congestion and even denial-of-service conditions.
+
+Remediation:  TraceSecurity recommends modifying the default community strings to prevent future enumeration and modification of networked devices. In cases where this modification would cause disruption to system functionality, TraceSecurity recommends contacting the vendor to determine additional viable solutions for altering the community strings and ensuring proper system functionality.
+
+Testing Notes:  The ISA was successful in enumerating information about the host via default community strings via the metasploit module auxiliary/scanner/snmp/snmp_enum.
