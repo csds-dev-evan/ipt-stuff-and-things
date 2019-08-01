@@ -1,0 +1,22 @@
+Loops
++++++++++++++++++FOR LOOPS++++++++++++
+------------------------------------------------------
+for i in $(cat subnets); do fping -aq -g $i >> hosts; done
+
+for i in $(cat subnets); do route add -net $i gw <gateway> ; done
+
+for i in $(cat /root/centcoast_fcu/nmap-grep-2019-06-17-14-27-59/smb-hosts.txt); do python checker.py $i >> eternalbluecheck ; done 
+
+for i in $(cat ldap-hosts.txt); do enum4linux -G -U $i >> Enum4LinuxResults$i ; done
+
+for i in $(cat ldap-hosts.txt); do rpcclient -W CORP -U "%" -c rpcclientenumdomusers $i >> rcpclient$i ; done
+
+for i in $(cat ftp-hosts.txt); do echo $i; curl ftp://$i/ --max-time 30; echo ""; done | tee ftp-scan.txt
+
+for i in $(cat ike-hosts.txt); do ike-scan -A -M -n bob $i | tee aggressive$i.txt ; done
+
+for i in $(cat web-urls.txt); do dirb $i; done | tee $i_direnum
+
+for i in $(cat web-urls.txt); do dirb $i /usr/share/dirb/wordlists/vulns/apache.txt; done | tee $i_direnum_vuln
+
+for i in $(cat https-hosts.txt); do sslscan $i | tee scan$i; done
