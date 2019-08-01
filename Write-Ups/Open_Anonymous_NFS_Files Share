@@ -1,0 +1,14 @@
+File shares were discovered via the NFS protocol that allowed anonymous authentication. An attacker could leverage these shares to read and write files on the remote host.
+
+TraceSecurity recommends the organization configure the NFS shares on the remote host so that only authorized hosts can mount its remote shares.
+
+Two NFS file shares on remote servers could be mounted by the ISA during the engagement. 
+
+The analyst used Metaploit modules and the tool sharesearch to enumerate NFS file shares. Three hosts were found to have minimal access controls and the analyst was able to mount these shares and read files from the remote host. To be noted is that minimal sensitive data was found during the prescribed time for this assessment.
+
+The purpose of NFS is to allow users and services access shared directories in a network.
+
+This test attempts to mount each exported NFS shares. Some old versions of nfsd do not do the proper security checking when it comes to NFS access controls, or the remote host may be badly configured.
+
+Place the appropriate restrictions on all NFS shares or block NFS from outside access.
+Mountable NFS Shares is a high risk vulnerability that is also high frequency and high visibility.
