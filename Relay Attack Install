@@ -1,13 +1,21 @@
 ---------------------------
 Relay Attack install:::::
 ---------------------------
+sudo su
 sudo apt install git -y
 sudo apt install python-pip -y
 sudo apt install tmux -y
 sudo apt install proxychains -y
+sudo apt-get install python-flask -y
+sudo apt-get install python-netifaces -y
+
 mkdir Tools && cd Tools
+wget https://github.com/enthought/Python-2.7.3/blob/master/Lib/SimpleHTTPServer.py
 sudo git clone https://github.com/lgandx/responder
 sudo git clone https://github.com/SecureAuthCorp/impacket
 sudo git clone https://github.com/fox-it/mitm6
-sudo cd impacket && pip install . && cd .. && cd mitm6 && pip install -r requirements.txt
+sudo git clone https://github.com/EmpireProject/Empire.git
+sudo bash ./Empire/setup/install.sh
+
+cd impacket && python setup.py install && cd .. && cd mitm6 && python setup.py install
 sudo apt-get install python-impacket python-twisted python-netifaces python-ipaddress python-scapy python-future -y
