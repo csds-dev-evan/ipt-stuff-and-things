@@ -4,7 +4,6 @@ setg verbose true
 spool logs/smb_version.log
 use auxiliary/scanner/smb/smb_version
 set RHOSTS file:smb-hosts.txt
-
 run
 spool off
 
@@ -12,13 +11,18 @@ spool off
 spool logs/smb_ms17_010.log
 use auxiliary/scanner/smb/smb_ms17_010
 set RHOSTS file:smb-hosts.txt
-
 run
 spool off
+
+spool logs/ms12_020_check.log
+use auxiliary/scanner/rdp/ms12_020_check
+set RHOSTS file:rdp-hosts.txt
+run
+spool off
+
 spool logs/named_pipes.log
 use auxiliary/scanner/smb/pipe_auditor
 set RHOSTS file:smb-hosts.txt
-
 run
 spool off
 
@@ -26,7 +30,6 @@ spool off
 spool logs/smb_enumshares.log
 use auxiliary/scanner/smb/smb_enumshares
 set RHOSTS file:smb-hosts.txt
-
 run
 spool off
 
@@ -35,7 +38,6 @@ use auxiliary/scanner/mssql/mssql_login
 set RHOSTS file:mssql-hosts.txt
 set username sa
 set password sa
-
 run
 spool off
 
@@ -43,7 +45,6 @@ spool off
 spool logs/mssql_ping.log
 use auxiliary/scanner/mssql/mssql_ping
 set RHOSTS file:mssql-hosts.txt
-
 run
 spool off
 
@@ -56,14 +57,13 @@ spool off
 spool logs/webdav_scanner.log
 use auxiliary/scanner/http/webdav_scanner
 set RHOSTS file:http-hosts.txt
-
 run
 spool off
 
 spool logs/dir_webdav_unicode_bypass.log
 use auxiliary/scanner/http/dir_webdav_unicode_bypass
 set RHOSTS file:http-hosts.txt
-
+run
 spool off
 
 spool logs/vulnerable_directories.log
@@ -115,13 +115,9 @@ set RHOSTS file:http-hosts.txt
 run
 spool off
 
-
-
-
 spool logs/vnc_login.log
 use auxiliary/scanner/vnc/vnc_login
 set RHOSTS file:vnc-hosts.txt
-
 run
 spool off
 
@@ -129,7 +125,6 @@ spool off
 spool logs/vnc_none_auth.log
 use auxiliary/scanner/vnc/vnc_none_auth
 set RHOSTS file:vnc-hosts.txt
-
 run
 spool off
 
@@ -137,7 +132,6 @@ spool off
 spool logs/ipmi_version.log
 use auxiliary/scanner/ipmi/ipmi_version
 set RHOSTS file:623-udp-hosts.txt
-
 run
 spool off
 
@@ -145,7 +139,6 @@ spool off
 spool logs/ipmi_cipher_zero.log
 use auxiliary/scanner/ipmi/ipmi_cipher_zero
 set RHOSTS file:623-udp-hosts.txt
-
 run
 spool off
 
@@ -153,7 +146,6 @@ spool off
 spool logs/ipmi_dumphashes.log
 use auxiliary/scanner/ipmi/ipmi_dumphashes
 set RHOSTS file:623-udp-hosts.txt
-
 run
 spool off
 
@@ -161,7 +153,6 @@ spool off
 spool logs/nfsmount.log
 use auxiliary/scanner/nfs/nfsmount
 set RHOSTS file:111-tcp-hosts.txt
-
 run
 spool off
 
@@ -169,7 +160,6 @@ spool off
 spool logs/open_x11.log
 use auxiliary/scanner/x11/open_x11
 set RHOSTS file:6000-tcp-hosts.txt
-
 run
 spool off
 
@@ -177,7 +167,6 @@ spool off
 spool logs/telnet_version.log
 use auxiliary/scanner/telnet/telnet_version
 set RHOSTS file:telnet-hosts.txt
-
 run
 spool off
 
@@ -185,7 +174,6 @@ spool off
 spool logs/ssh_version.log
 use auxiliary/scanner/ssh/ssh_version
 set RHOSTS file:ssh-hosts.txt
-
 run
 spool off
 
@@ -193,7 +181,6 @@ spool off
 spool logs/ftpanonymous.log
 use auxiliary/scanner/ftp/anonymous
 set RHOSTS file:ftp-hosts.txt
-
 run
 spool off
 
@@ -201,7 +188,6 @@ spool off
 spool logs/ftp_version.log
 use auxiliary/scanner/ftp/ftp_version
 set RHOSTS file:ftp-hosts.txt
-
 run
 spool off
 
@@ -225,13 +211,11 @@ run
 set USERNAME ftp
 set PASSWORD ftp
 run
-
 spool off
 
 spool logs/openssl_heartbleed.log
 use auxiliary/scanner/ssl/openssl_heartbleed
 set RHOSTS file:https-hosts.txt
-
 run
 spool off
 
@@ -239,7 +223,6 @@ spool off
 spool logs/openssl_ccs.log
 use auxiliary/scanner/ssl/openssl_ccs
 set RHOSTS file:https-hosts.txt
-
 run
 spool off
 
@@ -247,7 +230,6 @@ spool off
 spool logs/postgres_login.log
 use auxiliary/scanner/postgres/postgres_login
 set RHOSTS file:postgresql-hosts.txt
-
 run
 spool off
 
@@ -260,7 +242,6 @@ spool off
 spool logs/snmp_enum.log
 use auxiliary/scanner/snmp/snmp_enum
 set RHOSTS file:snmp-hosts.txt
-
 run
 spool off
 
@@ -268,7 +249,6 @@ spool off
 spool logs/snmp_enum_hp_laserjet.log
 use auxiliary/scanner/snmp/snmp_enum_hp_laserjet
 set RHOSTS file:snmp-hosts.txt
-
 run
 spool off
 
@@ -276,7 +256,6 @@ spool off
 spool logs/snmp_login.log
 use auxiliary/scanner/snmp/snmp_login
 set RHOSTS file:snmp-hosts.txt
-
 run
 spool off
 
@@ -284,7 +263,6 @@ spool off
 spool logs/mysql_version.log
 use auxiliary/scanner/mysql/mysql_version
 set RHOSTS file:3306-tcp-hosts.txt
-
 run
 spool off
 
@@ -304,5 +282,7 @@ set USERNAME cisco
 set USERNAME cisco
 run
 spool off
+
+
 
 exit
