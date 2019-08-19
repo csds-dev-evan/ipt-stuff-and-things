@@ -21,7 +21,9 @@ It should be noted that Mimikatz can only dump credentials and password hashes i
 
 
 Mimikatz core functionality/commands
+
 ```
+
 -----------------------------------------------------------------
     Command           Description
     -------           -----------
@@ -32,4 +34,5 @@ Mimikatz core functionality/commands
     ssp               Attempt to retrieve ssp creds
     tspkg             Attempt to retrieve tspkg creds
     wdigest           Attempt to retrieve wdigest creds
+
 ```
