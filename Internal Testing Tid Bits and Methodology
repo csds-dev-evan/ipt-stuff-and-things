@@ -9,7 +9,7 @@ sudo ./Responder.py -I eth0 -i <IP OF SCANNER> -w on -F on -r on -b
 
 
 --Build routes to scanner (On attacking host -- typically your kali box) ,
-for i in $(cat subnets); do route add -net $i gw 19.1.1.2 ; done
+for i in $(cat subnets); do route add -net $i gw <gateway> ; done
 
 --Use fping to identify list of live hosts
 for i in $(cat subnets); do fping -aq -g $i >> hosts; done
@@ -21,7 +21,7 @@ Routing your windows box::::
 
 -Route Traffic to Windows
 In scanner
-	sudo route add -host 172.24.44.61 gw 19.1.1.1
+	sudo route add -host <scanner ip> gw <gateway>
 In Kali Box
 	echo 1 > /proc/sys/net/ipv4/ip_forward
 	cat /proc/sys/net/ipv4/ip_forward (look for “1”)
@@ -68,6 +68,12 @@ Initial Access/Footholds:
 
 --------------------------------------------------------------------------------		
 
+
+
+
+
+
+--------------------------------------------------------------------------------
 Default Credentials: Note -- Lockout thresholds are typically not set for ssh/telnet
 ###Always test the following: All can be tested through metasploit modules
 ssh -- root:root , admin:admin, admin:password, cisco:cisco
