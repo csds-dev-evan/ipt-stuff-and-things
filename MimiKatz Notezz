@@ -11,3 +11,25 @@ Domain escalation.
 -Impersonate Kerberos tickets to find privileged account then make yourself a DA
 -
 It should be noted that Mimikatz can only dump credentials and password hashes if it is executed from the context of a privilege user like local administrator.
+
+
+
+
+
+
+
+
+
+Mimikatz core functionality/commands
+```
+-----------------------------------------------------------------
+    Command           Description
+    -------           -----------
+    kerberos          Attempt to retrieve kerberos creds
+    livessp           Attempt to retrieve livessp creds
+    mimikatz_command  Run a custom command
+    msv               Attempt to retrieve msv creds (hashes)
+    ssp               Attempt to retrieve ssp creds
+    tspkg             Attempt to retrieve tspkg creds
+    wdigest           Attempt to retrieve wdigest creds
+```
