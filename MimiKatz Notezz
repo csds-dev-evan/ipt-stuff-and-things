@@ -1,0 +1,13 @@
+Mimikatz is essential in every internal penetration test or red team engagement mainly for its capability to extract passwords from memory in clear-text. It is also known that adversaries are using Mimikatz heavily in their operations. 
+
+Although Microsoft introduced a security patch which can be applied to current operating systems and even older ones such as Windows 2008 Server. Mimikatz is effective and has many use cases. 
+
+Lateral movement 
+-PTH with dumped SAM hashes
+-Cracking domain hashes that are pulled
+-Kerberoasting
+
+Domain escalation. 
+-Impersonate Kerberos tickets to find privileged account then make yourself a DA
+-
+It should be noted that Mimikatz can only dump credentials and password hashes if it is executed from the context of a privilege user like local administrator.
