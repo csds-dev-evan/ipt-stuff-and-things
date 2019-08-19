@@ -14,3 +14,9 @@ Incognito:
 2.	-add_group_user 'Domain Admins' <username>
 ```	
 --------------------------------------------------------
+
+
+```
+. .\SessionGopher.ps1
+Invoke-SessionGopher -Thorough
+```
