@@ -1,0 +1,14 @@
+# Windows Autologon
+reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
+
+# VNC
+reg query "HKCU\Software\ORL\WinVNC3\Password"
+
+# Putty
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions"
+
+# Registry
+reg query HKLM /f password /t REG_SZ /s 
+reg query HKCU /f password /t REG_SZ /s
+
+# search C: for passwords 
